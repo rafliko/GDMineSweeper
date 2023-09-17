@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://hx1v7syhc1ss"]
+
+[ext_resource type="Script" path="res://scripts/Start.cs" id="1_om586"]
+[ext_resource type="Script" path="res://scripts/DifficultySelect.cs" id="1_wffei"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 116.0
+offset_top = 80.0
+offset_right = 116.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Difficulty" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 41.0
+offset_right = 107.0
+offset_bottom = 67.0
+text = "Difficulty: "
+script = ExtResource("1_wffei")
+
+[node name="OptionButton" type="OptionButton" parent="Difficulty"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = -5.0
+offset_right = 250.0
+offset_bottom = 15.0
+
+[node name="Start" type="Button" parent="."]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 77.0
+offset_right = 252.0
+offset_bottom = 108.0
+text = "Start"
+script = ExtResource("1_om586")
