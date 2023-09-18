@@ -1,12 +1,16 @@
 using Godot;
 using System;
 
-public partial class Start : Button
+public partial class menu : Control
 {
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Pressed += StartGame;
+		GetWindow().Size = new Vector2I(500,300);
+		GetNode<Button>("Start").Pressed += StartGame;
+		GetNode<OptionButton>("DifficultySelect").AddItem("Easy");
+		GetNode<OptionButton>("DifficultySelect").AddItem("Medium");
+		GetNode<OptionButton>("DifficultySelect").AddItem("Hard");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -16,7 +20,7 @@ public partial class Start : Button
 
 	void StartGame()
 	{
-		string diff = GetNode<OptionButton>("../Difficulty/OptionButton").Text;
+		string diff = GetNode<OptionButton>("DifficultySelect").Text;
 		switch(diff)
 		{
 			case "Easy":
@@ -35,7 +39,7 @@ public partial class Start : Button
 				main.W = 30;
 				main.H = 16;
 				main.mineCount = 99;
-				main.scale = 0.5f;
+				main.scale = 0.7f;
 				break;
 		}
 		GetTree().ChangeSceneToFile("res://scenes/main.tscn");

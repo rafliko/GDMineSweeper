@@ -81,12 +81,6 @@ public partial class cell : Node2D
 							}
 						}
 					}
-					else if(value==12)
-					{
-						main.started = false;
-						GetTree().ReloadCurrentScene();
-					}
-
 				}
 			}
 		}

@@ -13,6 +13,7 @@ public partial class main : Node2D
 	public static bool started = false;
 
 	int[,] board = new int[W,H];
+	double t = 0;
 	RandomNumberGenerator rng = new RandomNumberGenerator();
 
 	PackedScene Cell = GD.Load<PackedScene>("res://prefabs/cell.tscn");
@@ -20,21 +21,28 @@ public partial class main : Node2D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		Button btReset = GetNode<Button>("Reset");
+		Label lbStatus = GetNode<Label>("Status");
+		Button btMenu = GetNode<Button>("Menu");
+
 		resize = Convert.ToInt32(size*scale);
 		GetWindow().Size = new Vector2I(W*resize,(H+1)*resize);
 
-		var c = Cell.Instantiate();
-		AddChild(c);
-		c.GetNode<Node2D>(".").Set("value",12);
-		c.GetNode<Node2D>(".").Set("st",(int)state.Uncovered);
-		c.GetNode<Node2D>(".").Scale = new Vector2(scale,scale);
-		c.GetNode<Node2D>(".").Position = new Vector2(0,0);
+		btReset.Scale = new Vector2(scale,scale);
+		btReset.Position = new Vector2(0,0);
+		lbStatus.Scale = new Vector2(scale,scale);
+		lbStatus.Position = new Vector2(W*resize/2-lbStatus.Size.X/2,lbStatus.Position.Y);
+		btMenu.Scale = new Vector2(scale,scale);
+		btMenu.Position = new Vector2(W*resize-btMenu.Size.X*scale,0);
+
+		btReset.Pressed += Reset;
+		btMenu.Pressed += Menu;
 
 		for(int x=0; x<W; x++)
 		{
 			for(int y=0; y<H; y++)
 			{
-				c = Cell.Instantiate();
+				var c = Cell.Instantiate();
 				GetNode<Node>("Board").AddChild(c);
 				c.GetNode<Node2D>(".").Set("posx",x);
 				c.GetNode<Node2D>(".").Set("posy",y);
@@ -47,6 +55,21 @@ public partial class main : Node2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		int coverCount = 0;
+		foreach(var c in GetNode("Board").GetChildren())
+		{
+			if((int)c.Get("st")==(int)state.Covered) coverCount++;
+		}
+
+		if(started&&coverCount!=0&&coverCount!=mineCount) 
+		{
+			t += delta;
+			if(t>1)
+			{
+				t = 0;
+				Tick();
+			}
+		}
 	}
 
 	void Setup()
@@ -115,6 +138,25 @@ public partial class main : Node2D
 		}
 
 		started = true;
+	}
+
+	void Tick()
+	{
+		Label lbStatus = GetNode<Label>("Status");
+		int t = Convert.ToInt32(lbStatus.Text)+1;
+		lbStatus.Text = Convert.ToString(t);
+	}
+
+	void Reset()
+	{
+		started = false;
+		GetTree().ReloadCurrentScene();
+	}
+
+	void Menu()
+	{
+		started = false;
+		GetTree().ChangeSceneToFile("res://scenes/menu.tscn");
 	}
 }
 
