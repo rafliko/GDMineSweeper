@@ -58,7 +58,7 @@ public partial class main : Node2D
 		int coverCount = 0;
 		foreach(var c in GetNode("Board").GetChildren())
 		{
-			if((int)c.Get("st")==(int)state.Covered) coverCount++;
+			if((int)c.Get("st") is (int)state.Covered or (int)state.Flag) coverCount++;
 		}
 
 		if(started&&coverCount!=0&&coverCount!=mineCount) 
