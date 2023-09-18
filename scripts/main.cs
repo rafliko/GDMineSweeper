@@ -70,6 +70,11 @@ public partial class main : Node2D
 				Tick();
 			}
 		}
+
+		if(coverCount==mineCount)
+			GetNode<Label>("Status").AddThemeColorOverride("font_color",new Color("00ff00")); //green - Win
+		else if(coverCount==0)
+			GetNode<Label>("Status").AddThemeColorOverride("font_color",new Color("ff0000")); //red - Game Over
 	}
 
 	void Setup()
